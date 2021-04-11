@@ -45,6 +45,7 @@ public class StickyFoot : MonoBehaviour {
         } else { // animation is NOT playing:
             plantedPosition.y = Mathf.Clamp(plantedPosition.y, 2, 100);
             transform.position = plantedPosition;
+            FindGroundBumps();
             //transform.rotation = plantedRotation;
         }
 
@@ -79,5 +80,14 @@ public class StickyFoot : MonoBehaviour {
             timeCurrent = 0;
         }
 
+    }
+
+    void FindGroundBumps() {
+        Ray bumpRay = new Ray(transform.position + new Vector3(0, 2f, 0), Vector3.down * 2);
+        Debug.DrawRay(bumpRay.origin, bumpRay.direction);
+
+        if (Physics.Raycast(bumpRay, out RaycastHit hit)) {
+            plantedPosition.y = hit.point.y + 2;
+        }
     }
 }

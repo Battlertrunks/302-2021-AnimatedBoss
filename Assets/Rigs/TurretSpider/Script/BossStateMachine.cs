@@ -28,7 +28,10 @@ public class BossStateMachine : MonoBehaviour {
         public class Idle : State {
 
             public override State Update() {
-                
+                // behaviour:
+                bossState.IdleAnim();
+
+
                 return null;
             }
         }
@@ -60,12 +63,30 @@ public class BossStateMachine : MonoBehaviour {
 
     }
 
+    private States.State state;
+
+    public Transform hoverBody;
+
     void Start() {
         
     }
 
 
     void Update() {
-        
+        if (state == null) SwitchStates(new States.Idle());
+
+        if (state != null) SwitchStates(state.Update());
+    }
+
+    void SwitchStates(States.State stateSwitched) {
+        if (stateSwitched == null) return;
+
+        if (state != null) state.OnEnd();
+        state = stateSwitched;
+        state.OnStart(this);
+    }
+
+    void IdleAnim() {
+        hoverBody.position = Vector3.up * Mathf.Cos(Time.time);
     }
 }
