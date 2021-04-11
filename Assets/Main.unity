@@ -123,47 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 3d2b38615c84e8d4fb310821c354fc4a, type: 2}
---- !u!1 &451816665 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3771843321554732964, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-  m_PrefabInstance: {fileID: 471580154}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &451816670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 451816665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04e48c69ef37c7f44ac30b1039d26b32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverBody: {fileID: 724294660}
-  targetPlayer: {fileID: 0}
---- !u!195 &451816671
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 451816665}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 2
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &459161957
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,34 +225,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 57509847, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.568
-      objectReference: {fileID: 0}
-    - target: {fileID: 363183762, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.568
-      objectReference: {fileID: 0}
-    - target: {fileID: 667878796, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 904579880, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1048497663, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.544313
-      objectReference: {fileID: 0}
-    - target: {fileID: 1048497663, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.069006
-      objectReference: {fileID: 0}
-    - target: {fileID: 1048497663, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5.996941
-      objectReference: {fileID: 0}
     - target: {fileID: 3771843321554732964, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
       propertyPath: m_Name
       value: SmithS_turretRover-1
@@ -342,8 +273,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1048497667, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
 --- !u!1 &520452252
 GameObject:
@@ -440,11 +370,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &724294660 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1137483013960436507, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
-  m_PrefabInstance: {fileID: 471580154}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &754314468
 GameObject:
   m_ObjectHideFlags: 0
