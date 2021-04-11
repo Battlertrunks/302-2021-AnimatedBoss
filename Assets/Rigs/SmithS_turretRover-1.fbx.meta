@@ -2,34 +2,10 @@ fileFormatVersion: 2
 guid: 8b42f3a29ec3a11428fbd09b9086e11b
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: -5317557602016885832
-    second: rig.turret|Attack.grapple
-  - first:
-      74: -6185315555824674045
-    second: rig.turret|Attack.shoot
-  - first:
-      74: 6013886774536875097
-    second: rig.turret|Death
-  - first:
-      74: -788764541985996315
-    second: rig.turret|Hit.Damage
-  - first:
-      74: 655893064023466905
-    second: rig.turret|Idel
-  - first:
-      74: 7073110104065069117
-    second: rig.turret|Jump
-  - first:
-      74: 2829088976394699526
-    second: rig.turret|Jump.attack
-  - first:
-      74: -5055040352715723919
-    second: rig.turret|Walk
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -97,7 +73,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []

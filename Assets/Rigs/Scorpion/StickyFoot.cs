@@ -33,16 +33,19 @@ public class StickyFoot : MonoBehaviour {
 
             float p = timeCurrent / timeLength;
 
+            plantedPosition.y = Mathf.Clamp(plantedPosition.y, 2, 100);
+
             Vector3 finalPosition = AnimMath.Lerp(previousPlantedPosition, plantedPosition, p);
-            transform.rotation = AnimMath.Lerp(previousPlantedRotation, plantedRotation, p);
+            //transform.rotation = AnimMath.Lerp(previousPlantedRotation, plantedRotation, p);
 
             finalPosition.y += verticleStepMovement.Evaluate(p);
 
             transform.position = finalPosition;
 
         } else { // animation is NOT playing:
+            plantedPosition.y = Mathf.Clamp(plantedPosition.y, 2, 100);
             transform.position = plantedPosition;
-            transform.rotation = plantedRotation;
+            //transform.rotation = plantedRotation;
         }
 
 
@@ -51,7 +54,7 @@ public class StickyFoot : MonoBehaviour {
     bool CheckIfCanStep() {
 
         Vector3 vBetween = transform.position - stepPosition.position;
-        float threshold = 5;
+        float threshold = 6;
 
         return (vBetween.sqrMagnitude > threshold * threshold);
     }
