@@ -123,6 +123,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 3d2b38615c84e8d4fb310821c354fc4a, type: 2}
+--- !u!1 &393188954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 393188955}
+  m_Layer: 0
+  m_Name: ProjectileSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &393188955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393188954}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 6.19, z: 10.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 724294660}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &459161957
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,9 +255,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 451816670, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+      propertyPath: barrel
+      value: 
+      objectReference: {fileID: 393188955}
+    - target: {fileID: 451816670, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+      propertyPath: targetPlayer
+      value: 
+      objectReference: {fileID: 754314472}
+    - target: {fileID: 451816670, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+      propertyPath: targetMeterDistance
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 3771843321554732964, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
       propertyPath: m_Name
       value: SmithS_turretRover-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771843321554732964, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771843321554732964, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4545142650407443742, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
       propertyPath: m_RootOrder
@@ -370,6 +420,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &724294660 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1137483013960436507, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
+  m_PrefabInstance: {fileID: 471580154}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &754314468
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,9 +437,10 @@ GameObject:
   - component: {fileID: 754314471}
   - component: {fileID: 754314470}
   - component: {fileID: 754314469}
+  - component: {fileID: 754314473}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -460,12 +516,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 754314468}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.78, y: 1.01, z: -15.48}
+  m_LocalPosition: {x: 23.78, y: 3.98, z: -15.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &754314473
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754314468}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &947021585
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1331,7 +1405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1685874640
 Animator:
   serializedVersion: 3
@@ -1743,7 +1817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 444626329616942534, guid: 1a9137b671938fb479d7f04f4c1d2ea3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 963895553319165820, guid: 1a9137b671938fb479d7f04f4c1d2ea3, type: 3}
       propertyPath: m_RootOrder
