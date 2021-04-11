@@ -54,7 +54,7 @@ public class StickyFoot : MonoBehaviour {
     bool CheckIfCanStep() {
 
         Vector3 vBetween = transform.position - stepPosition.position;
-        float threshold = 6;
+        float threshold = Random.Range(4.0f, 7.0f);
 
         return (vBetween.sqrMagnitude > threshold * threshold);
     }
