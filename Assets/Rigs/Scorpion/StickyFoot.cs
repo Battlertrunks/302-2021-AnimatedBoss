@@ -48,15 +48,13 @@ public class StickyFoot : MonoBehaviour {
             FindGroundBumps();
             //transform.rotation = plantedRotation;
         }
-
-
     }
 
     bool CheckIfCanStep() {
 
         Vector3 vBetween = transform.position - stepPosition.position;
         float threshold = Random.Range(4.0f, 7.0f);
-
+        
         return (vBetween.sqrMagnitude > threshold * threshold);
     }
 
@@ -66,7 +64,7 @@ public class StickyFoot : MonoBehaviour {
 
         Debug.DrawRay(ray.origin, ray.direction * 3);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 3)) {
+        if (Physics.Raycast(ray, out RaycastHit hit, 4)) {
 
             // setup beginning of animation:
             previousPlantedPosition = transform.position;

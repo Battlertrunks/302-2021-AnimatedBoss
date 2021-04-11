@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BossStateMachine : MonoBehaviour {
 
@@ -31,6 +32,11 @@ public class BossStateMachine : MonoBehaviour {
                 // behaviour:
                 bossState.IdleAnim();
 
+                // transition: 
+                if (bossState.targetPlayer) {
+                    bossState.bossNav.isStopped = false;
+                    return new States.Attack();
+                }
 
                 return null;
             }
@@ -47,6 +53,13 @@ public class BossStateMachine : MonoBehaviour {
         public class Attack : State {
 
             public override State Update() {
+                // behaviour
+                bossState.bossNav.SetDestination(bossState.targetPlayer.position);
+
+                if (!bossState.targetPlayer) {
+                    bossState.bossNav.isStopped = true;
+                    return new States.Idle();
+                }
 
                 return null;
             }
@@ -67,8 +80,12 @@ public class BossStateMachine : MonoBehaviour {
 
     public Transform hoverBody;
 
+    private NavMeshAgent bossNav;
+
+    public Transform targetPlayer;
+
     void Start() {
-        
+        bossNav = GetComponent<NavMeshAgent>();
     }
 
 
@@ -87,6 +104,7 @@ public class BossStateMachine : MonoBehaviour {
     }
 
     void IdleAnim() {
-        hoverBody.position = Vector3.up * Mathf.Cos(Time.time);
+        hoverBody.localPosition = Vector3.down * .25f * Mathf.Cos(Time.time);
+        hoverBody.localRotation = Quaternion.Euler(2f * Mathf.Sin(Time.time), 4f * Mathf.Sin(Time.time), 2f * Mathf.Cos(Time.time));
     }
 }
