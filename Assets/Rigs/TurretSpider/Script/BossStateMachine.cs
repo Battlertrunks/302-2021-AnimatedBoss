@@ -28,18 +28,30 @@ public class BossStateMachine : MonoBehaviour {
 
         public class Idle : State {
 
+            float idleTime = 5;
+
+            public Idle() {
+                idleTime = 5;
+            }
+
             public override State Update() {
                 // behaviour:
                 bossState.IdleAnim();
 
                 // transition: 
-                if (bossState.health <= 0)
+                if (bossState.health <= 0) {
+                    bossState.TurretDeathAnim();
                     return new States.DeathAnim();
+                }
 
                 if (bossState.TargetDistance(bossState.targetMeterDistance)) {
                     bossState.bossNav.isStopped = false;
                     return new States.Attack();
                 }
+
+                idleTime -= Time.deltaTime;
+                if (!bossState.TargetDistance(bossState.targetMeterDistance) && idleTime <= 0)
+                    return new States.Walk_Patrol(true); // Starts to patrol
 
                 return null;
             }
@@ -47,7 +59,27 @@ public class BossStateMachine : MonoBehaviour {
 
         public class Walk_Patrol : State {
 
+            bool patrollingPoint = true;
+
+            public Walk_Patrol(bool patrolling) {
+                patrollingPoint = patrolling;
+            }
+
             public override State Update() {
+                // behaviour:
+                if (patrollingPoint) { // if runPatrolOnce is true
+                    bossState.PatrolingPointsSetter(); // goes to randomly selected patrol points
+                    patrollingPoint = false; // turning to false to run only once
+                }
+
+                // transitions:
+                if (!bossState.bossNav.pathPending && bossState.bossNav.remainingDistance <= 2f) //if the boss has reached his patroll point
+                    return new States.Idle(); // goes back to idle and send idleTimer value
+
+                if (bossState.TargetDistance(bossState.targetMeterDistance)) {
+                    bossState.bossNav.isStopped = false;
+                    return new States.Attack();
+                }
 
                 return null;
             }
@@ -74,6 +106,11 @@ public class BossStateMachine : MonoBehaviour {
                 }
 
                 // transition:
+                if (bossState.health <= 0) {
+                    bossState.TurretDeathAnim();
+                    return new States.DeathAnim();
+                }
+
                 if (!bossState.TargetDistance(bossState.targetMeterDistance)) {
                     bossState.bossNav.isStopped = true;
                     return new States.Idle();
@@ -88,6 +125,8 @@ public class BossStateMachine : MonoBehaviour {
         public class DeathAnim : State {
 
             public override State Update() {
+                // behaviour:
+                bossState.DeathAnimation();
 
                 return null;
             }
@@ -102,7 +141,17 @@ public class BossStateMachine : MonoBehaviour {
 
     private NavMeshAgent bossNav;
 
+    public Transform[] patrolingPoints;
+
+    int currentPointPatrolling;
+
     public Transform targetPlayer;
+
+    public Transform mainCannon;
+
+    public Transform mainCannonMesh;
+
+    private Rigidbody cannonRigidBody;
 
     public Transform barrel;
 
@@ -117,10 +166,14 @@ public class BossStateMachine : MonoBehaviour {
     public float AttackDistance = 35;
 
 
-    private float health = 10;
+    bool deathAnimLiftLegs = false;
+
+
+    public float health = 10;
 
     void Start() {
         bossNav = GetComponent<NavMeshAgent>();
+        cannonRigidBody = mainCannonMesh.GetComponent<Rigidbody>();
     }
 
 
@@ -130,6 +183,8 @@ public class BossStateMachine : MonoBehaviour {
         if (state != null) SwitchStates(state.Update());
 
         if (timeCannonSpawns > 0) timeCannonSpawns -= Time.deltaTime;
+
+        if (health > 0) BarrelResetAnim();
     }
 
     void SwitchStates(States.State stateSwitched) {
@@ -175,7 +230,52 @@ public class BossStateMachine : MonoBehaviour {
     void AttackAction() {
         if (timeCannonSpawns > 0) return;
 
+        BarrelRecoil();
         Instantiate(cannonProjectile, barrel.position, barrel.rotation);
         timeCannonSpawns = 1 / rateOfFire;
+    }
+
+    void BarrelRecoil() {
+        mainCannon.localPosition = Vector3.up * .01f;
+    }
+
+    void BarrelResetAnim() {
+        if (mainCannon.localPosition.y > 0f) {
+            float cannonRecoilRest = AnimMath.Slide(mainCannon.localPosition.y, Vector3.zero.y, .001f);
+            Vector3 recoilOver = new Vector3(0, cannonRecoilRest, 0.0175f);
+            mainCannon.localPosition = recoilOver;
+        }
+    }
+
+    void DeathAnimation() {
+
+        if (!deathAnimLiftLegs) {
+            hoverBody.localPosition = Vector3.Slerp(hoverBody.localPosition, Vector3.up * 1f, 1f * Time.deltaTime);
+
+            if (hoverBody.localPosition.y >= .95f) deathAnimLiftLegs = true;
+
+            return;
+        }
+
+        if (hoverBody.localPosition.y > -2.5f) {
+            hoverBody.localPosition = Vector3.Slerp(hoverBody.localPosition, Vector3.down * 2.8f, 1f * Time.deltaTime);
+            hoverBody.localRotation = Quaternion.Euler(1f * Mathf.Sin(5 * Time.time), 1f * Mathf.Sin(5 * Time.time), .8f * Mathf.Cos(5 * Time.time));
+        }
+
+    }
+
+    void TurretDeathAnim() {
+        cannonRigidBody.isKinematic = false;
+        cannonRigidBody.useGravity = true;
+
+        mainCannonMesh.parent = null;
+
+        cannonRigidBody.AddForce(0, 20, 4, ForceMode.Impulse);
+    }
+
+    void PatrolingPointsSetter() {
+        bossNav.updatePosition = true; // sets to true
+        bossNav.destination = patrolingPoints[currentPointPatrolling].position; // sets point to go to 
+        currentPointPatrolling = (currentPointPatrolling + 1) % patrolingPoints.Length; // assigns the next point to go to
     }
 }
