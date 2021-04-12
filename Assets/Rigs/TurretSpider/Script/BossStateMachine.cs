@@ -60,6 +60,7 @@ public class BossStateMachine : MonoBehaviour {
                 if (bossState.TargetDistance(bossState.targetMeterDistance - 20)) {
                     bossState.bossNav.isStopped = true;
                 } else {
+                    bossState.bossNav.isStopped = false;
                     bossState.bossNav.SetDestination(bossState.targetPlayer.position);
                 }
                 bossState.LookAtTarget();
