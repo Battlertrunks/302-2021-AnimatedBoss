@@ -33,7 +33,11 @@ public class BossStateMachine : MonoBehaviour {
                 bossState.IdleAnim();
 
                 // transition: 
+                if (bossState.health <= 0)
+                    return new States.DeathAnim();
+
                 if (bossState.TargetDistance(bossState.targetMeterDistance)) {
+                    bossState.bossNav.isStopped = false;
                     return new States.Attack();
                 }
 
@@ -53,7 +57,11 @@ public class BossStateMachine : MonoBehaviour {
 
             public override State Update() {
                 // behaviour:
-                bossState.bossNav.SetDestination(bossState.targetPlayer.position);
+                if (bossState.TargetDistance(bossState.targetMeterDistance - 20)) {
+                    bossState.bossNav.isStopped = true;
+                } else {
+                    bossState.bossNav.SetDestination(bossState.targetPlayer.position);
+                }
                 bossState.LookAtTarget();
 
 
@@ -66,6 +74,7 @@ public class BossStateMachine : MonoBehaviour {
 
                 // transition:
                 if (!bossState.TargetDistance(bossState.targetMeterDistance)) {
+                    bossState.bossNav.isStopped = true;
                     return new States.Idle();
                 }
 
@@ -75,7 +84,7 @@ public class BossStateMachine : MonoBehaviour {
             }
         }
 
-        public class deathAnim : State {
+        public class DeathAnim : State {
 
             public override State Update() {
 
@@ -96,9 +105,18 @@ public class BossStateMachine : MonoBehaviour {
 
     public Transform barrel;
 
+    public Transform cannonProjectile;
+
+    private float rateOfFire = 1;
+
+    private float timeCannonSpawns = 0;
+
     public float targetMeterDistance = 10;
 
     public float AttackDistance = 35;
+
+
+    private float health = 10;
 
     void Start() {
         bossNav = GetComponent<NavMeshAgent>();
@@ -109,6 +127,8 @@ public class BossStateMachine : MonoBehaviour {
         if (state == null) SwitchStates(new States.Idle());
 
         if (state != null) SwitchStates(state.Update());
+
+        if (timeCannonSpawns > 0) timeCannonSpawns -= Time.deltaTime;
     }
 
     void SwitchStates(States.State stateSwitched) {
@@ -131,11 +151,9 @@ public class BossStateMachine : MonoBehaviour {
         Vector3 disToTarget = targetPlayer.position - transform.position;
 
         if (disToTarget.sqrMagnitude > targetDis * targetDis) {
-            bossNav.isStopped = true;
             return false;
         }
 
-        bossNav.isStopped = false;
         return true;
     }
 
@@ -144,10 +162,19 @@ public class BossStateMachine : MonoBehaviour {
 
         print("trying to look");
         Quaternion rotateTowards = Quaternion.LookRotation((targetPlayer.position - hoverBody.position) - new Vector3(0, 6, 0));
-        hoverBody.rotation = Quaternion.Slerp(hoverBody.rotation, rotateTowards, 1 * Time.deltaTime); //hoverBody.LookAt(targetPlayer.position - new Vector3(0, 5, 0));
+
+        Quaternion constricting = rotateTowards;
+        constricting.x = Mathf.Clamp(constricting.x, -.10f, .15f);
+
+        print(constricting.x);
+
+        hoverBody.rotation = Quaternion.Slerp(hoverBody.rotation, constricting, 1 * Time.deltaTime); //hoverBody.LookAt(targetPlayer.position - new Vector3(0, 5, 0));
     }
 
     void AttackAction() {
-        print("bang");
+        if (timeCannonSpawns > 0) return;
+
+        Instantiate(cannonProjectile, barrel.position, barrel.rotation);
+        timeCannonSpawns = 1 / rateOfFire;
     }
 }

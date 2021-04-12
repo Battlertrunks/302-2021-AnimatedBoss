@@ -60,11 +60,11 @@ public class StickyFoot : MonoBehaviour {
 
     void DoRayCast() {
 
-        Ray ray = new Ray(stepPosition.position + Vector3.up, Vector3.down);
+        Ray ray = new Ray(stepPosition.position + new Vector3(0, 3, 0), Vector3.down);
 
         Debug.DrawRay(ray.origin, ray.direction * 3);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 4)) {
+        if (Physics.Raycast(ray, out RaycastHit hit, 7)) {
 
             // setup beginning of animation:
             previousPlantedPosition = transform.position;
