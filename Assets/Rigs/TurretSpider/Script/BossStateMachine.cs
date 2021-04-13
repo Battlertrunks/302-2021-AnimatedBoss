@@ -41,6 +41,7 @@ public class BossStateMachine : MonoBehaviour {
                 // transition: 
                 if (bossState.health <= 0) {
                     bossState.TurretDeathAnim();
+                    bossState.bossNav.enabled = false;
                     return new States.DeathAnim();
                 }
 
@@ -73,6 +74,12 @@ public class BossStateMachine : MonoBehaviour {
                 }
 
                 // transitions:
+                if (bossState.health <= 0) {
+                    bossState.TurretDeathAnim();
+                    bossState.bossNav.enabled = false;
+                    return new States.DeathAnim();
+                }
+
                 if (!bossState.bossNav.pathPending && bossState.bossNav.remainingDistance <= 2f) //if the boss has reached his patroll point
                     return new States.Idle(); // goes back to idle and send idleTimer value
 
@@ -108,6 +115,7 @@ public class BossStateMachine : MonoBehaviour {
                 // transition:
                 if (bossState.health <= 0) {
                     bossState.TurretDeathAnim();
+                    bossState.bossNav.enabled = false;
                     return new States.DeathAnim();
                 }
 
@@ -185,6 +193,8 @@ public class BossStateMachine : MonoBehaviour {
         if (timeCannonSpawns > 0) timeCannonSpawns -= Time.deltaTime;
 
         if (health > 0) BarrelResetAnim();
+
+        print(state);
     }
 
     void SwitchStates(States.State stateSwitched) {
