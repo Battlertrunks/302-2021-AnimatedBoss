@@ -66,8 +66,11 @@ public class PlayerStates : MonoBehaviour {
 
     CharacterController player;
 
+    private Camera cam;
+
     void Start() {
         player = GetComponent<CharacterController>();
+        cam = Camera.main;
     }
 
 
@@ -89,8 +92,12 @@ public class PlayerStates : MonoBehaviour {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        Vector3 move = Vector3.right * h + v * Vector3.forward;
+        float cameraYaw = cam.transform.eulerAngles.y;
+        transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(0, cameraYaw, 0), .01f);
+
+        Vector3 move = transform.right * h + v * transform.forward;
         if (move.sqrMagnitude > 1) move.Normalize();
+
 
         player.Move(move * 10 * Time.deltaTime);
     }

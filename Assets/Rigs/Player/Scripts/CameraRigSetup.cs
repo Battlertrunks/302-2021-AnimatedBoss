@@ -20,7 +20,7 @@ public class CameraRigSetup : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Confined;
     }
 
-    void Update() {
+    void LateUpdate() {
 
         if (playerPos)
             transform.position = playerPos.transform.position;
