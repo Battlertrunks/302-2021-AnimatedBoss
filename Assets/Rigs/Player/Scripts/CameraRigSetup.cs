@@ -14,6 +14,8 @@ public class CameraRigSetup : MonoBehaviour {
 
     public PlayerStates playerPos;
 
+    public Transform gun;
+
     void Start() {
         cam = GetComponent<Camera>();
         Cursor.visible = false;
@@ -37,5 +39,8 @@ public class CameraRigSetup : MonoBehaviour {
         pitch = Mathf.Clamp(pitch, -20, 50);
 
         transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(pitch, yaw, 0), .001f);
+
+        float gunPitch = pitch;
+        gun.localRotation = AnimMath.Slide(gun.localRotation, Quaternion.Euler(0, -90, -gunPitch), .01f);
     }
 }
