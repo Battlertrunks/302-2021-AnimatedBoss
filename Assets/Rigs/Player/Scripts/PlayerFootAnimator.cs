@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This script animates the foot / legs by changing the local position of this object (IK target).
 /// </summary>
-public class FootAnimator : MonoBehaviour {
+public class PlayerFootAnimator : MonoBehaviour {
 
     /// <summary>
     /// The local-space starting position of this object
@@ -24,7 +24,9 @@ public class FootAnimator : MonoBehaviour {
     /// </summary>
     public float stepOffset = 0;
 
-    PlayerState goon;
+    public Transform playerRot;
+
+    PlayerStates player;
 
     private Vector3 targetPos;
     private Quaternion targetRot;
@@ -32,20 +34,18 @@ public class FootAnimator : MonoBehaviour {
     void Start() {
         startingPos = transform.localPosition;
         startingRot = transform.localRotation;
-        goon = GetComponentInParent<PlayerState>();
+        player = GetComponentInParent<PlayerStates>();
     }
 
     void Update() {
 
-        switch (goon.state) {
-            case PlayerState.States.Idle:
-                AnimateIdle();
-                break;
 
-            case PlayerState.States.Walk:
-                AnimateWalk();
-                break;
-        }
+        //AnimateIdle();
+
+
+
+        AnimateWalk();
+
 
         // ease position and rotation towards their targets:
         //transform.position = AnimMath.Slide(transform.position, targetPos, .01f);
@@ -55,15 +55,15 @@ public class FootAnimator : MonoBehaviour {
     void AnimateWalk() {
 
         Vector3 finalPos = startingPos;
-        float time = (Time.time + stepOffset) * goon.stepSpeed;
+        float time = (Time.time + stepOffset) * player.steppingSpeed;
 
         // math
         // Lateral movement (z + x)
         float frontToBack = Mathf.Sin(time);
-        finalPos += goon.moveDir * frontToBack * goon.walkScale.z;
+        finalPos += player.move * frontToBack * player.walkScale.z;
 
         // verticle movement (y)
-        finalPos.y += Mathf.Cos(time) * goon.walkScale.y;
+        finalPos.y += Mathf.Cos(time) * player.walkScale.y;
         //finalPos.x *= goon.walkScale.x;
 
         bool isOnGround =  (finalPos.y < startingPos.y);
@@ -76,7 +76,7 @@ public class FootAnimator : MonoBehaviour {
         float anklePitch = isOnGround ? 0 : -p * 20;
 
         transform.localPosition = finalPos;
-        transform.localRotation = startingRot * Quaternion.Euler(0, 0, anklePitch);
+        transform.localRotation = startingRot * Quaternion.Euler(0, playerRot.rotation.y, anklePitch);
 
         //targetPos = transform.TransformPoint(finalPos);
         //targetRot = transform.parent.rotation * Quaternion.Euler(0, 0, anklePitch);

@@ -7,21 +7,21 @@ public class HipAnimater : MonoBehaviour {
     float rollAmount = 5;
 
     Quaternion startingRot;
-    GoonController goon;
+    PlayerState goon;
 
     void Start() {
         startingRot = transform.localRotation;
-        goon = GetComponentInParent<GoonController>();
+        goon = GetComponentInParent<PlayerState>();
     }
 
 
     void Update() {
         switch (goon.state) {
-            case GoonController.States.Idle:
+            case PlayerState.States.Idle:
                 AnimateIdle();
                 break;
 
-            case GoonController.States.Walk:
+            case PlayerState.States.Walk:
                 AnimateWalk();
                 break;
         }

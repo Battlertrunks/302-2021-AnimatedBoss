@@ -94,6 +94,12 @@ public class PlayerStates : MonoBehaviour {
 
     public float jumpImpulse = 10;
 
+    public float steppingSpeed = 5;
+
+    public Vector3 walkScale = Vector3.one;
+
+    public Vector3 move { get; private set; }
+
     [Header("Player weapon variables:")]
     public Transform muzzle;
 
@@ -141,7 +147,7 @@ public class PlayerStates : MonoBehaviour {
         float cameraYaw = cam.transform.eulerAngles.y;
         transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(0, cameraYaw, 0), .01f);
 
-        Vector3 move = transform.right * h + v * transform.forward;
+        move = transform.right * h + v * transform.forward;
         if (move.sqrMagnitude > 1) move.Normalize();
 
         verticalVelocity += gravityMultiplier * Time.deltaTime;

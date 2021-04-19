@@ -17,6 +17,8 @@ public class StickyFoot : MonoBehaviour {
     private float timeLength = .25f;
     private float timeCurrent = 0;
 
+    public float footHeight = 0;
+
     void Start() {
         
     }
@@ -33,7 +35,7 @@ public class StickyFoot : MonoBehaviour {
 
             float p = timeCurrent / timeLength;
 
-            plantedPosition.y = Mathf.Clamp(plantedPosition.y, 2, 100);
+            plantedPosition.y = Mathf.Clamp(plantedPosition.y, footHeight, 100);
 
             Vector3 finalPosition = AnimMath.Lerp(previousPlantedPosition, plantedPosition, p);
             //transform.rotation = AnimMath.Lerp(previousPlantedRotation, plantedRotation, p);
@@ -43,7 +45,7 @@ public class StickyFoot : MonoBehaviour {
             transform.position = finalPosition;
 
         } else { // animation is NOT playing:
-            plantedPosition.y = Mathf.Clamp(plantedPosition.y, 2, 100);
+            plantedPosition.y = Mathf.Clamp(plantedPosition.y, footHeight, 100);
             transform.position = plantedPosition;
             FindGroundBumps();
             //transform.rotation = plantedRotation;
@@ -85,7 +87,7 @@ public class StickyFoot : MonoBehaviour {
         Debug.DrawRay(bumpRay.origin, bumpRay.direction);
 
         if (Physics.Raycast(bumpRay, out RaycastHit hit)) {
-            plantedPosition.y = hit.point.y + 2;
+            plantedPosition.y = hit.point.y + footHeight;
         }
     }
 }

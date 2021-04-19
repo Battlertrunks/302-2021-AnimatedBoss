@@ -53,7 +53,7 @@ public class ScorpianController : MonoBehaviour {
 
         Vector3 localVelocity = groundRing.InverseTransformDirection(velocity);
 
-        groundRing.localPosition = AnimMath.Slide(groundRing.localPosition, localVelocity * 3, .0001f);
+        groundRing.localPosition = AnimMath.Slide(groundRing.localPosition, localVelocity * 2, .0001f);
 
         //groundRing.localEulerAngles = new Vector3(0, h * 30, 0);
     }
