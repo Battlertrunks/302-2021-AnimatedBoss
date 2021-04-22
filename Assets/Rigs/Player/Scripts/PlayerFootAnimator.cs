@@ -28,6 +28,8 @@ public class PlayerFootAnimator : MonoBehaviour {
 
     PlayerStates player;
 
+    CharacterController playerMovement;
+
     private Vector3 targetPos;
     private Quaternion targetRot;
 
@@ -37,16 +39,21 @@ public class PlayerFootAnimator : MonoBehaviour {
         startingPos = transform.localPosition;
         startingRot = transform.localRotation;
         player = GetComponentInParent<PlayerStates>();
+        playerMovement = GetComponentInParent<CharacterController>();
     }
 
     void Update() {
 
+        if (!playerMovement.isGrounded) {
+            AnimateJump();
+            return;
+        }
 
         //AnimateIdle();
 
+        if (player.currentState == 0) AnimateIdle();
 
-
-        AnimateWalk();
+        if (player.currentState == 1) AnimateWalk();
 
 
         // ease position and rotation towards their targets:
@@ -54,10 +61,16 @@ public class PlayerFootAnimator : MonoBehaviour {
         //transform.rotation = AnimMath.Slide(transform.rotation, targetRot, .01f);
     }
 
+    void AnimateJump() {
+        if (transform.localPosition.y <= 0f) {
+            transform.localPosition = AnimMath.Slide(transform.localPosition, transform.localPosition + (Vector3.up * 1f), .1f);
+        }
+    }
+
     void AnimateWalk() {
 
         Vector3 finalPos = startingPos;
-        float time = (Time.time + stepOffset) * player.steppingSpeed;
+        float time = (Time.time + stepOffset) * player.setStepSpeed;
 
         // math
         // Lateral movement (z + x)
@@ -81,7 +94,7 @@ public class PlayerFootAnimator : MonoBehaviour {
         transform.localPosition = finalPos;
         transform.localRotation = startingRot * Quaternion.Euler(0, 0, anklePitch);
 
-        FindGround();
+        //FindGround();
 
         //targetPos = transform.TransformPoint(finalPos);
         //targetRot = transform.parent.rotation * Quaternion.Euler(0, 0, anklePitch);
@@ -99,14 +112,13 @@ public class PlayerFootAnimator : MonoBehaviour {
 
     void FindGround() {
 
-        Ray ray = new Ray(transform.position + new Vector3(0, 3f, 0), Vector3.down);
-        Debug.DrawRay(transform.position + new Vector3(0, 1.5f, 0), Vector3.down);
+        Ray ray = new Ray(transform.position + new Vector3(0, 0.5f, 0), Vector3.down * 1);
 
         Debug.DrawRay(ray.origin, ray.direction);
 
         if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.tag == "Ground") {
 
-            transform.position = hit.point;
+            transform.position = hit.point +  new Vector3(0, .16f, 0);
             //targetPos = hit.point;
             
             transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;

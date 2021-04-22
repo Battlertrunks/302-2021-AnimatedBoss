@@ -14,6 +14,6 @@ public class PlayerHandsTarget : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        transform.position = AnimMath.Slide(transform.position, target.position, .001f);
+        transform.position = AnimMath.Slide(transform.position, target.position, .0001f);
     }
 }

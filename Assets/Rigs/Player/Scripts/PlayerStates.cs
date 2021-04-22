@@ -29,6 +29,8 @@ public class PlayerStates : MonoBehaviour {
             public override State Update() {
                 // behaviour:
                 playerState.PlayerWalk(10);
+                playerState.IdleAnimation();
+                playerState.currentState = 0;
 
                 // transition:
                 if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
@@ -45,8 +47,13 @@ public class PlayerStates : MonoBehaviour {
             public override State Update() {
                 // behaviour:
                 playerState.PlayerWalk(playerState.playerWalkSpeed);
+                playerState.currentState = 1;
 
                 // transition:
+                if (Input.GetButton("Fire3")) {
+                    playerState.setStepSpeed = playerState.runningStepingSpeed; ;
+                    return new States.Running();
+                }
                 if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d"))
                     return new States.Idle();
 
@@ -60,6 +67,26 @@ public class PlayerStates : MonoBehaviour {
             }
         }
 
+        public class Running : State {
+            public override State Update() {
+                // behaviour:
+                playerState.PlayerWalk(playerState.playerWalkSpeed + 7);
+
+                // transitions:
+                if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) {
+                    playerState.setStepSpeed = playerState.steppingSpeed;
+                    return new States.Idle();
+                }
+
+                if (!Input.GetButton("Fire3")) {
+                    playerState.setStepSpeed = playerState.steppingSpeed;
+                    return new States.Walking();
+                }
+
+                return null;
+            }
+        }
+
         public class ShootingAttack : State {
             public override State Update() {
                 // behaviour:
@@ -68,6 +95,10 @@ public class PlayerStates : MonoBehaviour {
                 // transition:
                 
                 
+                if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d")) {
+                    return new States.Walking();
+                }
+
                 return new States.Idle();
             }
         }
@@ -76,6 +107,7 @@ public class PlayerStates : MonoBehaviour {
             public override State Update() {
                 // behaviour
                 playerState.DeathAnimation();
+                playerState.currentState = 2;
 
                 return null;
             }
@@ -101,6 +133,8 @@ public class PlayerStates : MonoBehaviour {
     public float jumpImpulse = 10;
 
     public float steppingSpeed = 5;
+    public float runningStepingSpeed = 17;
+    [HideInInspector] public float setStepSpeed;
 
     public Vector3 walkScale = Vector3.one;
 
@@ -108,6 +142,10 @@ public class PlayerStates : MonoBehaviour {
 
     [Header("Player weapon variables:")]
     public Transform muzzle;
+
+    public Transform gunModel;
+
+    private Vector3 gunStartingLocation;
 
     public float roundsPerSecond = 10f;
 
@@ -121,6 +159,10 @@ public class PlayerStates : MonoBehaviour {
 
     public GameObject walkingAnim;
 
+    public int currentState = 0;
+
+    public Transform hipRing;
+
     public bool isGrounded {
         get {
             return player.isGrounded || timeLeftOnGround > 0;
@@ -131,6 +173,8 @@ public class PlayerStates : MonoBehaviour {
         player = GetComponent<CharacterController>();
         cam = Camera.main;
         ragDoll = GetComponentsInChildren<Rigidbody>();
+        setStepSpeed = steppingSpeed;
+        gunStartingLocation = gunModel.localPosition;
     }
 
 
@@ -140,6 +184,8 @@ public class PlayerStates : MonoBehaviour {
 
         if (timeLeftOnGround > 0) timeLeftOnGround -= Time.deltaTime;
         if (rateOfFire > 0) rateOfFire -= Time.deltaTime;
+
+        AttackAnimation();
     }
 
     void StateSwitcher(States.State switchState) {
@@ -149,6 +195,10 @@ public class PlayerStates : MonoBehaviour {
         state = switchState;
         state.OnStart(this);
         
+    }
+
+    void IdleAnimation() {
+        hipRing.localPosition = Vector3.down * 0.05f * Mathf.Sin(Time.time);
     }
 
     void PlayerWalk(float walkSpeed = 10) {
@@ -186,6 +236,12 @@ public class PlayerStates : MonoBehaviour {
         Instantiate(bullet, muzzle.position, muzzle.rotation);
 
         rateOfFire = 1 / roundsPerSecond;
+
+        gunModel.localPosition = AnimMath.Slide(gunModel.localPosition, gunModel.localPosition - (Vector3.forward * 3), .0001f);
+    }
+
+    void AttackAnimation() {
+        gunModel.localPosition = AnimMath.Slide(gunModel.localPosition, gunStartingLocation, .001f);
     }
 
     void DeathAnimation() {
