@@ -33,6 +33,8 @@ public class PlayerStates : MonoBehaviour {
                 playerState.currentState = 0;
 
                 // transition:
+                if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
+
                 if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
                     return new States.Walking();
 
@@ -60,8 +62,7 @@ public class PlayerStates : MonoBehaviour {
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
                     return new States.ShootingAttack();
 
-                if (Input.GetButton("Fire2"))
-                    return new States.DeathAnim();
+                if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
 
                 return null;
             }
@@ -73,6 +74,8 @@ public class PlayerStates : MonoBehaviour {
                 playerState.PlayerWalk(playerState.playerWalkSpeed + 7);
 
                 // transitions:
+                if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
+
                 if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) {
                     playerState.setStepSpeed = playerState.steppingSpeed;
                     return new States.Idle();
@@ -162,6 +165,8 @@ public class PlayerStates : MonoBehaviour {
     public int currentState = 0;
 
     public Transform hipRing;
+
+    public float playerHealthAmt = 10;
 
     public bool isGrounded {
         get {

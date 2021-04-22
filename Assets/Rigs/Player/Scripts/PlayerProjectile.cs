@@ -34,5 +34,7 @@ public class PlayerProjectile : MonoBehaviour {
         if (bossHealth) {
             bossHealth.health -= 10;
         }
+
+        Destroy(gameObject);
     }
 }
