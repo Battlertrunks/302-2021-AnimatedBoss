@@ -176,13 +176,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1539212555565581029}
-  m_LocalRotation: {x: -0.0644764, y: 0, z: -0, w: 0.99791926}
-  m_LocalPosition: {x: -0, y: 0.0015221953, z: -1.4901161e-10}
-  m_LocalScale: {x: 1, y: 1, z: 0.99999994}
+  m_LocalRotation: {x: -0.06447645, y: -0, z: -0, w: 0.9979192}
+  m_LocalPosition: {x: 0, y: 0.0015221916, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3678606488812260196}
   m_Father: {fileID: 3202512691702776980}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1622321916126245197
 GameObject:
@@ -929,9 +929,9 @@ Transform:
   m_Children:
   - {fileID: 1483424312208145532}
   - {fileID: 5936449128583684082}
-  - {fileID: 995780814208013611}
   - {fileID: 6070456994646284781}
   - {fileID: 8934379033000683513}
+  - {fileID: 995780814208013611}
   m_Father: {fileID: 1700991755872147309}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -995,7 +995,7 @@ Transform:
   m_Children:
   - {fileID: 8034458058329529694}
   m_Father: {fileID: 3202512691702776980}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7652129466004809122
 GameObject:
@@ -1038,7 +1038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7002740617908398970}
   m_Layer: 0
-  m_Name: Wood
+  m_Name: PlayerRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1089,7 +1089,7 @@ Transform:
   m_Children:
   - {fileID: 5728469622650503469}
   m_Father: {fileID: 3202512691702776980}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8276107895476606144
 GameObject:

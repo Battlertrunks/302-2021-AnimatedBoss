@@ -53,6 +53,9 @@ public class PlayerStates : MonoBehaviour {
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
                     return new States.ShootingAttack();
 
+                if (Input.GetButton("Fire2"))
+                    return new States.DeathAnim();
+
                 return null;
             }
         }
@@ -71,6 +74,9 @@ public class PlayerStates : MonoBehaviour {
 
         public class DeathAnim : State {
             public override State Update() {
+                // behaviour
+                playerState.DeathAnimation();
+
                 return null;
             }
         }
@@ -109,6 +115,12 @@ public class PlayerStates : MonoBehaviour {
 
     public PlayerProjectile bullet;
 
+    public Transform playerRig;
+
+    Rigidbody[] ragDoll;
+
+    public GameObject walkingAnim;
+
     public bool isGrounded {
         get {
             return player.isGrounded || timeLeftOnGround > 0;
@@ -118,6 +130,7 @@ public class PlayerStates : MonoBehaviour {
     void Start() {
         player = GetComponent<CharacterController>();
         cam = Camera.main;
+        ragDoll = GetComponentsInChildren<Rigidbody>();
     }
 
 
@@ -173,5 +186,16 @@ public class PlayerStates : MonoBehaviour {
         Instantiate(bullet, muzzle.position, muzzle.rotation);
 
         rateOfFire = 1 / roundsPerSecond;
+    }
+
+    void DeathAnimation() {
+        playerRig.parent = null;
+        player.enabled = false;
+        walkingAnim.SetActive(false);
+
+        foreach (Rigidbody ragdollAnim in ragDoll) {
+            ragdollAnim.useGravity = true;
+            ragdollAnim.isKinematic = false;
+        }
     }
 }

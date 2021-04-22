@@ -38,6 +38,11 @@ public class BossStateMachine : MonoBehaviour {
                 // behaviour:
                 bossState.IdleAnim();
 
+                Vector3 velocity = bossState.transform.forward * 0;
+                Vector3 localVelocity = bossState.groundRing.InverseTransformDirection(velocity);
+
+                bossState.groundRing.localPosition = AnimMath.Slide(bossState.groundRing.localPosition, localVelocity * 2, .0001f);
+
                 // transition: 
                 if (bossState.health <= 0) {
                     bossState.TurretDeathAnim();
@@ -51,8 +56,10 @@ public class BossStateMachine : MonoBehaviour {
                 }
 
                 idleTime -= Time.deltaTime;
-                if (!bossState.TargetDistance(bossState.targetMeterDistance) && idleTime <= 0)
+                if (!bossState.TargetDistance(bossState.targetMeterDistance) && idleTime <= 0) {
+                    bossState.bossNav.isStopped = false;
                     return new States.Walk_Patrol(true); // Starts to patrol
+                }
 
                 return null;
             }
@@ -72,6 +79,12 @@ public class BossStateMachine : MonoBehaviour {
                     bossState.PatrolingPointsSetter(); // goes to randomly selected patrol points
                     patrollingPoint = false; // turning to false to run only once
                 }
+
+                Vector3 velocity = bossState.transform.forward * 1.5f;
+                Vector3 localVelocity = bossState.groundRing.InverseTransformDirection(velocity);
+
+                bossState.groundRing.localPosition = AnimMath.Slide(bossState.groundRing.localPosition, localVelocity * 2, .0001f);
+                bossState.MoveLegsInDirection();
 
                 // transitions:
                 if (bossState.health <= 0) {
@@ -103,6 +116,7 @@ public class BossStateMachine : MonoBehaviour {
                     bossState.bossNav.SetDestination(bossState.targetPlayer.position);
                 }
                 bossState.LookAtTarget();
+                bossState.MoveLegsInDirection();
 
 
                 Debug.DrawRay(bossState.barrel.position, bossState.barrel.TransformDirection(Vector3.forward) * 35);
@@ -173,11 +187,14 @@ public class BossStateMachine : MonoBehaviour {
 
     public float AttackDistance = 35;
 
+    public Transform groundRing;
 
     bool deathAnimLiftLegs = false;
 
 
     public float health = 10;
+
+    public List<StickyFoot> feet = new List<StickyFoot>();
 
     void Start() {
         bossNav = GetComponent<NavMeshAgent>();
@@ -287,5 +304,28 @@ public class BossStateMachine : MonoBehaviour {
         bossNav.updatePosition = true; // sets to true
         bossNav.destination = patrolingPoints[currentPointPatrolling].position; // sets point to go to 
         currentPointPatrolling = (currentPointPatrolling + 1) % patrolingPoints.Length; // assigns the next point to go to
+    }
+
+    void MoveLegsInDirection() {
+        int feetStepping = 0;
+        int feetMoved = 0;
+        foreach (StickyFoot foot in feet) {
+            if (foot.isAnimating) feetStepping++;
+            if (foot.footHasMoved) feetMoved++;
+        }
+
+        if (feetMoved >= 6) {
+            foreach (StickyFoot foot in feet) {
+                foot.footHasMoved = false;
+            }
+        }
+
+        foreach (StickyFoot foot in feet) {
+            if (feetStepping < 3) {
+                if (foot.TryToMove()) {
+                    feetStepping++;
+                }
+            }
+        }
     }
 }

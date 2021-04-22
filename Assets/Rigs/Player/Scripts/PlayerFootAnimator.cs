@@ -31,6 +31,8 @@ public class PlayerFootAnimator : MonoBehaviour {
     private Vector3 targetPos;
     private Quaternion targetRot;
 
+    public Collider ground;
+
     void Start() {
         startingPos = transform.localPosition;
         startingRot = transform.localRotation;
@@ -60,7 +62,8 @@ public class PlayerFootAnimator : MonoBehaviour {
         // math
         // Lateral movement (z + x)
         float frontToBack = Mathf.Sin(time);
-        finalPos += player.move * frontToBack * player.walkScale.z;
+        Vector3 localMove = transform.InverseTransformDirection(player.move);
+        finalPos += localMove * frontToBack * player.walkScale.z;
 
         // verticle movement (y)
         finalPos.y += Mathf.Cos(time) * player.walkScale.y;
@@ -76,7 +79,9 @@ public class PlayerFootAnimator : MonoBehaviour {
         float anklePitch = isOnGround ? 0 : -p * 20;
 
         transform.localPosition = finalPos;
-        transform.localRotation = startingRot * Quaternion.Euler(0, playerRot.rotation.y, anklePitch);
+        transform.localRotation = startingRot * Quaternion.Euler(0, 0, anklePitch);
+
+        FindGround();
 
         //targetPos = transform.TransformPoint(finalPos);
         //targetRot = transform.parent.rotation * Quaternion.Euler(0, 0, anklePitch);
@@ -94,11 +99,12 @@ public class PlayerFootAnimator : MonoBehaviour {
 
     void FindGround() {
 
-        Ray ray = new Ray(transform.position + new Vector3(0, .5f, 0), Vector3.down * 2);
+        Ray ray = new Ray(transform.position + new Vector3(0, 3f, 0), Vector3.down);
+        Debug.DrawRay(transform.position + new Vector3(0, 1.5f, 0), Vector3.down);
 
         Debug.DrawRay(ray.origin, ray.direction);
 
-        if (Physics.Raycast(ray, out RaycastHit hit)) {
+        if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.tag == "Ground") {
 
             transform.position = hit.point;
             //targetPos = hit.point;
