@@ -36,7 +36,7 @@ public class PlayerStates : MonoBehaviour {
                 // transition:
                 if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
 
-                if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
+                if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d") || Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
                     return new States.Walking();
 
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
@@ -59,7 +59,7 @@ public class PlayerStates : MonoBehaviour {
                     playerState.setStepSpeed = playerState.runningStepingSpeed; ;
                     return new States.Running();
                 }
-                if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d"))
+                if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d") && (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0))
                     return new States.Idle();
 
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
@@ -80,7 +80,7 @@ public class PlayerStates : MonoBehaviour {
                 // transitions:
                 if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
 
-                if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) {
+                if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d") && (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)) {
                     playerState.setStepSpeed = playerState.steppingSpeed;
                     return new States.Idle();
                 }
@@ -102,7 +102,7 @@ public class PlayerStates : MonoBehaviour {
                 // transition:
                 
                 
-                if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d")) {
+                if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d") || Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) {
                     return new States.Walking();
                 }
 

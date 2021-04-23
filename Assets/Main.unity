@@ -344,7 +344,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 451816670, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 451816670, guid: dbf786c15ed2b744eac98af877e005b4, type: 3}
       propertyPath: targetPlayer
@@ -1592,6 +1592,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camSensitivityX: 7
   camSensitivityY: -7
+  camControllerSensitivityY: -1
+  camControllerSensitivityX: 2
   playerPos: {fileID: 754314469}
   gun: {fileID: 1558440641}
   mapPoint: {fileID: 1656041478}

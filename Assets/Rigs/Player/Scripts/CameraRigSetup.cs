@@ -12,6 +12,9 @@ public class CameraRigSetup : MonoBehaviour {
     public float camSensitivityX = 15;
     public float camSensitivityY = 15;
 
+    public float camControllerSensitivityY = 10;
+    public float camControllerSensitivityX = 10;
+
     public PlayerStates playerPos;
 
     public Transform gun;
@@ -19,7 +22,7 @@ public class CameraRigSetup : MonoBehaviour {
     public Transform mapPoint;
     public Transform moveCameratoWorld;
 
-    
+    private bool isUsingMouse = true;
 
     void Start() {
         cam = GetComponentInChildren<Camera>();
@@ -35,10 +38,39 @@ public class CameraRigSetup : MonoBehaviour {
 
         if (playerPos)
             transform.position = playerPos.transform.position;
-        OrbitPlayer();
+
+        DetectInput();
+
+        if (isUsingMouse)
+            MouseAimming();
+        else
+            ControllerAimming();
     }
 
-    void OrbitPlayer() {
+    void DetectInput() {
+        if (Input.GetAxisRaw("Mouse X") != 0 || Input.GetAxisRaw("Mouse Y") != 0) isUsingMouse = true;
+        if (Input.GetAxisRaw("Aim Horizontal X") != 0 || Input.GetAxisRaw("Aim Vertical Y") != 0) isUsingMouse = false;
+    }
+
+    void ControllerAimming() {
+
+        float h = Input.GetAxis("Aim Horizontal X");
+        float v = Input.GetAxis("Aim Vertical Y");
+
+        yaw += h * camControllerSensitivityX;
+        pitch += v * camControllerSensitivityY;
+
+        pitch = Mathf.Clamp(pitch, -20, 50);
+
+
+        transform.rotation = AnimMath.Slide(transform.rotation, Quaternion.Euler(pitch, yaw, 0), .001f);
+        float gunPitch = pitch;
+        gun.localRotation = AnimMath.Slide(gun.localRotation, Quaternion.Euler(0, -90, -gunPitch), .01f);
+
+        // Set transform.eulerAngles (0, y, 0);
+    }
+
+    void MouseAimming() {
         float cameraX = Input.GetAxis("Mouse X");
         float cameraY = Input.GetAxis("Mouse Y");
 
