@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerStates : MonoBehaviour {
 
@@ -49,7 +50,9 @@ public class PlayerStates : MonoBehaviour {
             public override State Update() {
                 // behaviour:
                 playerState.PlayerWalk(playerState.playerWalkSpeed);
+                playerState.PlayerWalkWaddleAnim();
                 playerState.currentState = 1;
+                playerState.hipRing.localPosition = Vector3.zero;
 
                 // transition:
                 if (Input.GetButton("Fire3")) {
@@ -168,6 +171,8 @@ public class PlayerStates : MonoBehaviour {
 
     public float playerHealthAmt = 10;
 
+    RigBuilder letBonesGo;
+
     public bool isGrounded {
         get {
             return player.isGrounded || timeLeftOnGround > 0;
@@ -180,6 +185,8 @@ public class PlayerStates : MonoBehaviour {
         ragDoll = GetComponentsInChildren<Rigidbody>();
         setStepSpeed = steppingSpeed;
         gunStartingLocation = gunModel.localPosition;
+
+        letBonesGo = GetComponentInChildren<RigBuilder>();
     }
 
 
@@ -203,7 +210,12 @@ public class PlayerStates : MonoBehaviour {
     }
 
     void IdleAnimation() {
-        hipRing.localPosition = Vector3.down * 0.05f * Mathf.Sin(Time.time);
+        hipRing.localPosition = Vector3.down * 0.005f * Mathf.Sin(Time.time);
+        hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.identity, .001f);
+    }
+
+    void PlayerWalkWaddleAnim() {
+        hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(0, 20f * Mathf.Sin(Time.time * 3), 90f * Mathf.Cos(Time.time * 4)), .001f);
     }
 
     void PlayerWalk(float walkSpeed = 10) {
@@ -251,6 +263,7 @@ public class PlayerStates : MonoBehaviour {
 
     void DeathAnimation() {
         playerRig.parent = null;
+        gunModel.gameObject.SetActive(false);
         player.enabled = false;
         walkingAnim.SetActive(false);
 
@@ -258,5 +271,7 @@ public class PlayerStates : MonoBehaviour {
             ragdollAnim.useGravity = true;
             ragdollAnim.isKinematic = false;
         }
+
+        letBonesGo.enabled = false;
     }
 }

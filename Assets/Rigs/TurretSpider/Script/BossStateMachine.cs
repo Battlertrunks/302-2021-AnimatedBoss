@@ -249,9 +249,7 @@ public class BossStateMachine : MonoBehaviour {
         Quaternion constricting = rotateTowards;
         constricting.x = Mathf.Clamp(constricting.x, -.10f, .15f);
 
-        print(constricting.x);
-
-        hoverBody.rotation = Quaternion.Slerp(hoverBody.rotation, constricting, 1 * Time.deltaTime); //hoverBody.LookAt(targetPlayer.position - new Vector3(0, 5, 0));
+        hoverBody.rotation = Quaternion.Slerp(hoverBody.rotation, constricting, 2 * Time.deltaTime); //hoverBody.LookAt(targetPlayer.position - new Vector3(0, 5, 0));
     }
 
     void AttackAction() {

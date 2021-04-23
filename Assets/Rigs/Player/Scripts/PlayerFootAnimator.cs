@@ -35,6 +35,8 @@ public class PlayerFootAnimator : MonoBehaviour {
 
     public Collider ground;
 
+    bool goToStartLocation = true;
+
     void Start() {
         startingPos = transform.localPosition;
         startingRot = transform.localRotation;
@@ -64,6 +66,7 @@ public class PlayerFootAnimator : MonoBehaviour {
     void AnimateJump() {
         if (transform.localPosition.y <= 0f) {
             transform.localPosition = AnimMath.Slide(transform.localPosition, transform.localPosition + (Vector3.up * 1f), .1f);
+            goToStartLocation = true;
         }
     }
 
@@ -76,10 +79,10 @@ public class PlayerFootAnimator : MonoBehaviour {
         // Lateral movement (z + x)
         float frontToBack = Mathf.Sin(time);
         Vector3 localMove = transform.InverseTransformDirection(player.move);
-        finalPos += localMove * frontToBack * player.walkScale.z;
+        finalPos += localMove * frontToBack * player.walkScale.z / 2;
 
         // verticle movement (y)
-        finalPos.y += Mathf.Cos(time) * player.walkScale.y;
+        finalPos.y += Mathf.Cos(time) * player.walkScale.y / 1.5f;
         //finalPos.x *= goon.walkScale.x;
 
         bool isOnGround =  (finalPos.y < startingPos.y);
@@ -94,6 +97,7 @@ public class PlayerFootAnimator : MonoBehaviour {
         transform.localPosition = finalPos;
         transform.localRotation = startingRot * Quaternion.Euler(0, 0, anklePitch);
 
+        goToStartLocation = true;
         //FindGround();
 
         //targetPos = transform.TransformPoint(finalPos);
@@ -102,7 +106,11 @@ public class PlayerFootAnimator : MonoBehaviour {
     }
 
     void AnimateIdle() {
-        transform.localPosition = startingPos;
+        if (goToStartLocation) {
+            transform.localPosition = AnimMath.Slide(transform.localPosition, startingPos, .1f);
+            if (transform.localPosition == startingPos)
+                goToStartLocation = false;
+        }
         transform.localRotation = startingRot;
 
         //targetPos = transform.TransformPoint(startingPos);
@@ -112,20 +120,19 @@ public class PlayerFootAnimator : MonoBehaviour {
 
     void FindGround() {
 
-        Ray ray = new Ray(transform.position + new Vector3(0, 0.5f, 0), Vector3.down * 1);
+        Ray ray = new Ray(transform.position + new Vector3(0, 0.5f, 0), Vector3.down * 3f);
 
         Debug.DrawRay(ray.origin, ray.direction);
 
         if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.tag == "Ground") {
 
-            transform.position = hit.point +  new Vector3(0, .16f, 0);
+            transform.position = AnimMath.Slide(transform.position, hit.point +  new Vector3(0, .16f, 0), .001f);
             //targetPos = hit.point;
             
             transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
             //targetRot = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
 
         } else {
-
         }
 
     }

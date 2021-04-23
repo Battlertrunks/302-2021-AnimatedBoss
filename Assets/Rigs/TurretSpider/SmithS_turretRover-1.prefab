@@ -251,7 +251,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footHeight: 0
+  footHeight: 2
   footHasMoved: 0
 --- !u!114 &588281087
 MonoBehaviour:
@@ -466,7 +466,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footHeight: 0
+  footHeight: 2
   footHasMoved: 0
 --- !u!114 &1048497665
 MonoBehaviour:
@@ -621,7 +621,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footHeight: 0
+  footHeight: 2
   footHasMoved: 0
 --- !u!114 &1375141217
 MonoBehaviour:
@@ -836,7 +836,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footHeight: 0
+  footHeight: 2
   footHasMoved: 0
 --- !u!114 &1441607441
 MonoBehaviour:
@@ -1021,7 +1021,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footHeight: 0
+  footHeight: 2
   footHasMoved: 0
 --- !u!114 &1659749881
 MonoBehaviour:
@@ -1176,7 +1176,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footHeight: 0
+  footHeight: 2
   footHasMoved: 0
 --- !u!114 &1675246171
 MonoBehaviour:
@@ -1727,7 +1727,7 @@ GameObject:
   - component: {fileID: 1693377446}
   m_Layer: 0
   m_Name: body
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2343,7 +2343,7 @@ GameObject:
   - component: {fileID: 451816671}
   m_Layer: 0
   m_Name: SmithS_turretRover-1
-  m_TagString: Player
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2414,14 +2414,6 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
-  - m_Transform: {fileID: 2712261674660721357}
-    m_Style:
-      shape: {fileID: 4300000, guid: b43e6ef97ee1b4e31be1a0187b9f4495, type: 2}
-      color: {r: 1, g: 0, b: 0, a: 0.5}
-      size: 7.13
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 90, y: 0, z: 0}
-    m_Visible: 1
 --- !u!143 &451816669
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2447,7 +2439,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3771843321554732964}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04e48c69ef37c7f44ac30b1039d26b32, type: 3}
   m_Name: 
@@ -2466,7 +2458,7 @@ MonoBehaviour:
   cannonProjectile: {fileID: 4148668452515301111, guid: 275cfcf56f2932942909be4810694632, type: 3}
   targetMeterDistance: 40
   AttackDistance: 35
-  groundRing: {fileID: 0}
+  groundRing: {fileID: 8727712155512233902}
   health: 10
   feet:
   - {fileID: 1675246172}
