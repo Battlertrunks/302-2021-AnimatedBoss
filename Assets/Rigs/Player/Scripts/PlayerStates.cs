@@ -75,7 +75,8 @@ public class PlayerStates : MonoBehaviour {
             public override State Update() {
                 // behaviour:
                 playerState.PlayerWalk(playerState.playerWalkSpeed + 7);
-
+                playerState.PlayerRunningWaddleAnim();
+                playerState.hipRing.localPosition = Vector3.zero;
                 // transitions:
                 if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
 
@@ -172,6 +173,7 @@ public class PlayerStates : MonoBehaviour {
     public float playerHealthAmt = 10;
 
     RigBuilder letBonesGo;
+    Collider[] turningOnRagdollColliders;
 
     public bool isGrounded {
         get {
@@ -187,6 +189,7 @@ public class PlayerStates : MonoBehaviour {
         gunStartingLocation = gunModel.localPosition;
 
         letBonesGo = GetComponentInChildren<RigBuilder>();
+        turningOnRagdollColliders = GetComponentsInChildren<Collider>();
     }
 
 
@@ -215,7 +218,14 @@ public class PlayerStates : MonoBehaviour {
     }
 
     void PlayerWalkWaddleAnim() {
-        hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(0, 20f * Mathf.Sin(Time.time * 3), 90f * Mathf.Cos(Time.time * 4)), .001f);
+        if (player.isGrounded)
+            hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(0, 20f * Mathf.Sin(Time.time * 3), 90f * Mathf.Cos(Time.time * 4)), .001f);
+        if (!player.isGrounded)
+            hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.identity, .001f);
+    }
+
+    void PlayerRunningWaddleAnim() {
+        hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(165, 1f * Mathf.Sin(Time.time * 3), 35f * Mathf.Cos(Time.time * 6)), .001f);
     }
 
     void PlayerWalk(float walkSpeed = 10) {
@@ -270,6 +280,9 @@ public class PlayerStates : MonoBehaviour {
         foreach (Rigidbody ragdollAnim in ragDoll) {
             ragdollAnim.useGravity = true;
             ragdollAnim.isKinematic = false;
+        }
+        foreach (Collider collider in turningOnRagdollColliders) {
+            collider.isTrigger = false;
         }
 
         letBonesGo.enabled = false;
