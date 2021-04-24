@@ -16,6 +16,7 @@ public class CameraRigSetup : MonoBehaviour {
     public float camControllerSensitivityX = 10;
 
     public PlayerStates playerPos;
+    Health playerHealth;
 
     public Transform gun;
 
@@ -28,10 +29,12 @@ public class CameraRigSetup : MonoBehaviour {
         cam = GetComponentInChildren<Camera>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+
+        playerHealth = playerPos.GetComponent<Health>();
     }
 
     void LateUpdate() {
-        if (playerPos.playerHealthAmt <= 0) {
+        if (playerHealth.health <= 0) {
             ViewMap();
             return;
         }
