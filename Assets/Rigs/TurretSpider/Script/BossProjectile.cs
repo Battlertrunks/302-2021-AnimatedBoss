@@ -33,9 +33,9 @@ public class BossProjectile : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        PlayerStates playerHealth = other.GetComponentInParent<PlayerStates>();
+        Health playerHealth = other.GetComponent<Health>();
         if (playerHealth) {
-            playerHealth.playerHealthAmt -= 10;
+            playerHealth.TakenDamage(10);
         }
 
         if (other.tag == "Boss") return;

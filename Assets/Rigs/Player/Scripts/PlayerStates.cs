@@ -42,6 +42,8 @@ public class PlayerStates : MonoBehaviour {
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
                     return new States.ShootingAttack();
 
+                if (playerState.playerHealth.health <= 0) return new States.DeathAnim();
+
                 return null;
             }
         }
@@ -65,7 +67,7 @@ public class PlayerStates : MonoBehaviour {
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
                     return new States.ShootingAttack();
 
-                if (playerState.playerHealthAmt <= 0) return new States.DeathAnim();
+                if (playerState.playerHealth.health <= 0) return new States.DeathAnim();
 
                 return null;
             }
@@ -89,6 +91,8 @@ public class PlayerStates : MonoBehaviour {
                     playerState.setStepSpeed = playerState.steppingSpeed;
                     return new States.Walking();
                 }
+
+                if (playerState.playerHealth.health <= 0) return new States.DeathAnim();
 
                 return null;
             }
@@ -129,7 +133,7 @@ public class PlayerStates : MonoBehaviour {
     private Camera cam;
 
     [Header("Player movement variables:")]
-    private float verticalVelocity = 0;
+    [HideInInspector] public float verticalVelocity = 0;
 
     public float gravityMultiplier = 10;
 
@@ -175,6 +179,8 @@ public class PlayerStates : MonoBehaviour {
     RigBuilder letBonesGo;
     Collider[] turningOnRagdollColliders;
 
+    private Health playerHealth;
+
     public bool isGrounded {
         get {
             return player.isGrounded || timeLeftOnGround > 0;
@@ -190,6 +196,7 @@ public class PlayerStates : MonoBehaviour {
 
         letBonesGo = GetComponentInChildren<RigBuilder>();
         turningOnRagdollColliders = GetComponentsInChildren<Collider>();
+        playerHealth = GetComponent<Health>();
     }
 
 
@@ -201,6 +208,7 @@ public class PlayerStates : MonoBehaviour {
         if (rateOfFire > 0) rateOfFire -= Time.deltaTime;
 
         AttackAnimation();
+        print(verticalVelocity);
     }
 
     void StateSwitcher(States.State switchState) {
@@ -225,7 +233,10 @@ public class PlayerStates : MonoBehaviour {
     }
 
     void PlayerRunningWaddleAnim() {
-        hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(165, 1f * Mathf.Sin(Time.time * 3), 35f * Mathf.Cos(Time.time * 6)), .001f);
+        if (player.isGrounded)
+            hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(165, 1f * Mathf.Sin(Time.time * 3), 35f * Mathf.Cos(Time.time * 6)), .001f);
+        if (!player.isGrounded)
+            hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.identity, .001f);
     }
 
     void PlayerWalk(float walkSpeed = 10) {
@@ -248,7 +259,7 @@ public class PlayerStates : MonoBehaviour {
         player.Move(moveDeltaWithGravity * Time.deltaTime);
 
         if (player.isGrounded) {
-            verticalVelocity = 0;
+            verticalVelocity = 0f;
             timeLeftOnGround = .2f;
         }
 

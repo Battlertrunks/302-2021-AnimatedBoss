@@ -64,7 +64,7 @@ public class PlayerFootAnimator : MonoBehaviour {
     }
 
     void AnimateJump() {
-        if (transform.localPosition.y <= 0f) {
+        if (transform.localPosition.y <= 0) {
             transform.localPosition = AnimMath.Slide(transform.localPosition, transform.localPosition + (Vector3.up * 1f), .1f);
             goToStartLocation = true;
         }

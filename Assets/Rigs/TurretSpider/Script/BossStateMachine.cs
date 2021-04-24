@@ -44,7 +44,7 @@ public class BossStateMachine : MonoBehaviour {
                 bossState.groundRing.localPosition = AnimMath.Slide(bossState.groundRing.localPosition, localVelocity * 2, .0001f);
 
                 // transition: 
-                if (bossState.health <= 0) {
+                if (bossState.bossHealth.health <= 0) {
                     bossState.TurretDeathAnim();
                     bossState.bossNav.enabled = false;
                     return new States.DeathAnim();
@@ -87,7 +87,7 @@ public class BossStateMachine : MonoBehaviour {
                 bossState.MoveLegsInDirection();
 
                 // transitions:
-                if (bossState.health <= 0) {
+                if (bossState.bossHealth.health <= 0) {
                     bossState.TurretDeathAnim();
                     bossState.bossNav.enabled = false;
                     return new States.DeathAnim();
@@ -127,7 +127,7 @@ public class BossStateMachine : MonoBehaviour {
                 }
 
                 // transition:
-                if (bossState.health <= 0) {
+                if (bossState.bossHealth.health <= 0) {
                     bossState.TurretDeathAnim();
                     bossState.bossNav.enabled = false;
                     return new States.DeathAnim();
@@ -191,14 +191,14 @@ public class BossStateMachine : MonoBehaviour {
 
     bool deathAnimLiftLegs = false;
 
-
-    public float health = 10;
-
     public List<StickyFoot> feet = new List<StickyFoot>();
+
+    private Health bossHealth;
 
     void Start() {
         bossNav = GetComponent<NavMeshAgent>();
         cannonRigidBody = mainCannonMesh.GetComponent<Rigidbody>();
+        bossHealth = GetComponent<Health>();
     }
 
 
@@ -209,7 +209,7 @@ public class BossStateMachine : MonoBehaviour {
 
         if (timeCannonSpawns > 0) timeCannonSpawns -= Time.deltaTime;
 
-        if (health > 0) BarrelResetAnim();
+        if (bossHealth.health > 0) BarrelResetAnim();
 
         print(state);
     }

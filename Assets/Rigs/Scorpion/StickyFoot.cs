@@ -8,7 +8,7 @@ public class StickyFoot : MonoBehaviour {
 
     public AnimationCurve verticleStepMovement;
 
-    public static float moveThreshold = 3;
+    public static float moveThreshold = 2;
 
     private Quaternion startingRot;
 

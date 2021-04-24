@@ -366,7 +366,7 @@ MonoBehaviour:
       m_SchemaId:
         m_Id: With3Levels
     lightingQualitySettings:
-      AOStepCount: 040000000600000010000000
+      AOStepCount: 04000000060000001e000000
       AOFullRes: 000001
       AOMaximumRadiusPixels: 200000002800000050000000
       AOBilateralUpsample: 000101

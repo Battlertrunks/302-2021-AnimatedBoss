@@ -30,9 +30,9 @@ public class PlayerProjectile : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        BossStateMachine bossHealth = other.GetComponent<BossStateMachine>();
-        if (bossHealth) {
-            bossHealth.health -= 10;
+        Health bossHealthScript = other.GetComponentInParent<Health>();
+        if (bossHealthScript) {
+            bossHealthScript.TakenDamage(10);
         }
 
         Destroy(gameObject);
