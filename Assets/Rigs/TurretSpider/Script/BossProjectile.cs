@@ -14,7 +14,7 @@ public class BossProjectile : MonoBehaviour
     public float damageAmount = 10;
 
     void Start() {
-        velocity = transform.forward * 20;
+        velocity = transform.forward * 150;
     }
 
     // Update is called once per frame

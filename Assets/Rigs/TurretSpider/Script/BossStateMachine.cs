@@ -109,7 +109,7 @@ public class BossStateMachine : MonoBehaviour {
 
             public override State Update() {
                 // behaviour:
-                if (bossState.TargetDistance(bossState.targetMeterDistance - 20)) {
+                if (bossState.TargetDistance(bossState.targetMeterDistance - 50)) {
                     bossState.bossNav.isStopped = true;
                 } else {
                     bossState.bossNav.isStopped = false;
@@ -120,7 +120,7 @@ public class BossStateMachine : MonoBehaviour {
 
 
                 Debug.DrawRay(bossState.barrel.position, bossState.barrel.TransformDirection(Vector3.forward) * 35);
-                if (bossState.TargetDistance(bossState.targetMeterDistance - 5) && Physics.Raycast(bossState.barrel.position, bossState.barrel.TransformDirection(Vector3.forward), out RaycastHit hit, bossState.AttackDistance)) {
+                if (bossState.TargetDistance(bossState.targetMeterDistance - 10) && Physics.Raycast(bossState.barrel.position, bossState.barrel.TransformDirection(Vector3.forward), out RaycastHit hit, bossState.AttackDistance)) {
 
                     if (hit.collider.gameObject.CompareTag("Player"))
                         bossState.AttackAction();
