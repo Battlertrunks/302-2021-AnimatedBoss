@@ -12,6 +12,7 @@ public class BossProjectile : MonoBehaviour
     private Vector3 velocity;
 
     public float damageAmount = 10;
+    public ParticleSystem bulletExplosion;
 
     void Start() {
         velocity = transform.forward * 150;
@@ -36,10 +37,12 @@ public class BossProjectile : MonoBehaviour
         Health playerHealth = other.GetComponent<Health>();
         if (playerHealth) {
             playerHealth.TakenDamage(10);
+            SoundEffectBoard.Impact();
         }
 
         if (other.tag == "Boss") return;
 
+        Instantiate(bulletExplosion, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }

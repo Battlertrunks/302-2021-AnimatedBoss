@@ -47,6 +47,7 @@ public class BossStateMachine : MonoBehaviour {
                 if (bossState.bossHealth.health <= 0) {
                     bossState.TurretDeathAnim();
                     bossState.bossNav.enabled = false;
+                    SoundEffectBoard.BossDeathSound();
                     return new States.DeathAnim();
                 }
 
@@ -90,6 +91,7 @@ public class BossStateMachine : MonoBehaviour {
                 if (bossState.bossHealth.health <= 0) {
                     bossState.TurretDeathAnim();
                     bossState.bossNav.enabled = false;
+                    SoundEffectBoard.BossDeathSound();
                     return new States.DeathAnim();
                 }
 
@@ -130,6 +132,7 @@ public class BossStateMachine : MonoBehaviour {
                 if (bossState.bossHealth.health <= 0) {
                     bossState.TurretDeathAnim();
                     bossState.bossNav.enabled = false;
+                    SoundEffectBoard.BossDeathSound();
                     return new States.DeathAnim();
                 }
 
@@ -257,6 +260,7 @@ public class BossStateMachine : MonoBehaviour {
 
         BarrelRecoil();
         Instantiate(cannonProjectile, barrel.position, barrel.rotation);
+        SoundEffectBoard.BossShooting();
         timeCannonSpawns = 1 / rateOfFire;
     }
 

@@ -42,7 +42,10 @@ public class PlayerStates : MonoBehaviour {
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
                     return new States.ShootingAttack();
 
-                if (playerState.playerHealth.health <= 0) return new States.DeathAnim();
+                if (playerState.playerHealth.health <= 0) {
+                    SoundEffectBoard.PlayerDeath();
+                    return new States.DeathAnim();
+                }
 
                 return null;
             }
@@ -67,7 +70,10 @@ public class PlayerStates : MonoBehaviour {
                 if (Input.GetButton("Fire1") && playerState.rateOfFire <= 0)
                     return new States.ShootingAttack();
 
-                if (playerState.playerHealth.health <= 0) return new States.DeathAnim();
+                if (playerState.playerHealth.health <= 0) {
+                    SoundEffectBoard.PlayerDeath();
+                    return new States.DeathAnim();
+                }
 
                 return null;
             }
@@ -92,7 +98,10 @@ public class PlayerStates : MonoBehaviour {
                     return new States.Walking();
                 }
 
-                if (playerState.playerHealth.health <= 0) return new States.DeathAnim();
+                if (playerState.playerHealth.health <= 0) {
+                    SoundEffectBoard.PlayerDeath();
+                    return new States.DeathAnim();
+                }
 
                 return null;
             }
@@ -266,6 +275,7 @@ public class PlayerStates : MonoBehaviour {
         if (isGrounded && heldJump) {
             verticalVelocity -= 10;
             timeLeftOnGround = 0;
+            SoundEffectBoard.JumpSound();
         }
     }
 
@@ -274,6 +284,7 @@ public class PlayerStates : MonoBehaviour {
         Instantiate(bullet, muzzle.position, muzzle.rotation);
 
         rateOfFire = 1 / roundsPerSecond;
+        SoundEffectBoard.PlayerShooting();
 
         gunModel.localPosition = AnimMath.Slide(gunModel.localPosition, gunModel.localPosition - (Vector3.forward * 3), .0001f);
     }
