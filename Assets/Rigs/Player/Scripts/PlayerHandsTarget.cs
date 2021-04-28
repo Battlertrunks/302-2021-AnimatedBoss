@@ -14,6 +14,7 @@ public class PlayerHandsTarget : MonoBehaviour {
 
 
     void Update() {
-        transform.position = AnimMath.Slide(transform.position, target.position, .0001f); // moves hands to target
+        //transform.position = AnimMath.Slide(transform.position, target.position, .0001f); // moves hands to target
+        transform.position = target.position;
     }
 }

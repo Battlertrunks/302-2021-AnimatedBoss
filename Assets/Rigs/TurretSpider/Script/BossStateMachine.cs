@@ -290,6 +290,8 @@ public class BossStateMachine : MonoBehaviour {
     /// </summary>
     private Health bossHealth;
 
+    public ParticleSystem fireOnTurret;
+
     void Start() {
         bossNav = GetComponent<NavMeshAgent>(); // Gets the boss nav mesh
         cannonRigidBody = mainCannonMesh.GetComponent<Rigidbody>(); // Gets the cannon's rigidbody
@@ -353,7 +355,7 @@ public class BossStateMachine : MonoBehaviour {
     void LookAtTarget() {
         if (!targetPlayer) return; // if no target
         
-        Quaternion rotateTowards = Quaternion.LookRotation((targetPlayer.position - hoverBody.position) - new Vector3(0, 6, 0));
+        Quaternion rotateTowards = Quaternion.LookRotation((targetPlayer.position - hoverBody.position) - new Vector3(0, 5, 0));
 
         Quaternion constricting = rotateTowards;
         constricting.x = Mathf.Clamp(constricting.x, -.10f, .15f);
@@ -419,6 +421,7 @@ public class BossStateMachine : MonoBehaviour {
     /// </summary>
     void TurretDeathAnim() {
         // changes the rigidbody from using kinematic to gravity
+        //fireOnTurret.Play();
         cannonRigidBody.isKinematic = false;
         cannonRigidBody.useGravity = true;
 

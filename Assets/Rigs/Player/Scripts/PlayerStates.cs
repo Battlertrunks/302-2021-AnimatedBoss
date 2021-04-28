@@ -373,7 +373,7 @@ public class PlayerStates : MonoBehaviour {
     /// </summary>
     void PlayerRunningWaddleAnim() {
         if (player.isGrounded) // rotates the hip when running
-            hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(165, 1f * Mathf.Sin(Time.time * 3), 35f * Mathf.Cos(Time.time * 6)), .001f);
+            hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.Euler(165, 1f * Mathf.Sin(Time.time * 3), 75f * Mathf.Cos(Time.time * 6)), .001f);
         if (!player.isGrounded) // rotates back to original rotation when not grounded
             hipRing.localRotation = AnimMath.Slide(hipRing.localRotation, Quaternion.identity, .001f);
     }
@@ -430,7 +430,7 @@ public class PlayerStates : MonoBehaviour {
         SoundEffectBoard.PlayerShooting(); // plays the gun sound
 
         // makes the recoil effect
-        gunModel.localPosition = AnimMath.Slide(gunModel.localPosition, gunModel.localPosition - (Vector3.forward * 3), .0001f);
+        gunModel.localPosition = AnimMath.Slide(gunModel.localPosition, gunModel.localPosition - (Vector3.forward * 6), .0001f);
     }
 
     /// <summary>
