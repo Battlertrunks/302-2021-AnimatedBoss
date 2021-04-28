@@ -49,7 +49,6 @@ public class SoundEffectBoard : MonoBehaviour {
     /// </summary>
     private AudioSource player;
 
-    // Start is called before the first frame update
     void Start() {
 
         if (main == null) {

@@ -24,38 +24,50 @@ public class PlayerFootAnimator : MonoBehaviour {
     /// </summary>
     public float stepOffset = 0;
 
+    /// <summary>
+    /// The rotation of the foot
+    /// </summary>
     public Transform playerRot;
 
+    /// <summary>
+    /// Get the player's state script
+    /// </summary>
     PlayerStates player;
 
+    /// <summary>
+    /// Gets the player's character controller
+    /// </summary>
     CharacterController playerMovement;
 
-    private Vector3 targetPos;
-    private Quaternion targetRot;
-
+    /// <summary>
+    /// Gets collider for the ground
+    /// </summary>
     public Collider ground;
 
+    /// <summary>
+    /// Moves legs in start location
+    /// </summary>
     bool goToStartLocation = true;
 
     void Start() {
-        startingPos = transform.localPosition;
-        startingRot = transform.localRotation;
-        player = GetComponentInParent<PlayerStates>();
-        playerMovement = GetComponentInParent<CharacterController>();
+        startingPos = transform.localPosition; // gets start position
+        startingRot = transform.localRotation; // gets start rotation
+        player = GetComponentInParent<PlayerStates>(); // gets player's state script
+        playerMovement = GetComponentInParent<CharacterController>(); // gets character controller
     }
 
     void Update() {
 
-        if (!playerMovement.isGrounded) {
-            AnimateJump();
-            return;
+        if (!playerMovement.isGrounded) { // if the player is not grounded
+            AnimateJump(); // does jump animation
+            return; // makes rest of the code not run
         }
 
         //AnimateIdle();
 
-        if (player.currentState == 0) AnimateIdle();
+        if (player.currentState == 0) AnimateIdle(); // if player is idling
 
-        if (player.currentState == 1) AnimateWalk();
+        if (player.currentState == 1) AnimateWalk(); // if player is walking
 
 
         // ease position and rotation towards their targets:
@@ -63,13 +75,19 @@ public class PlayerFootAnimator : MonoBehaviour {
         //transform.rotation = AnimMath.Slide(transform.rotation, targetRot, .01f);
     }
 
+    /// <summary>
+    /// works the jump animation 
+    /// </summary>
     void AnimateJump() {
-        if (transform.localPosition.y <= 0) {
-            transform.localPosition = AnimMath.Slide(transform.localPosition, transform.localPosition + (Vector3.up * 1f), .1f);
-            goToStartLocation = true;
+        if (transform.localPosition.y <= 0) { // if the localPosition of y is less then or equal 0
+            transform.localPosition = AnimMath.Slide(transform.localPosition, transform.localPosition + (Vector3.up * 1f), .1f); // slides to jump animation
+            goToStartLocation = true;// goes to start location
         }
     }
 
+    /// <summary>
+    /// Animates walk when the player is moving
+    /// </summary>
     void AnimateWalk() {
 
         Vector3 finalPos = startingPos;
@@ -95,7 +113,7 @@ public class PlayerFootAnimator : MonoBehaviour {
         float anklePitch = isOnGround ? 0 : -p * 20;
 
         transform.localPosition = finalPos;
-        transform.localRotation = startingRot * Quaternion.Euler(0, 0, anklePitch);
+        transform.localRotation = startingRot * Quaternion.Euler(0, 0, anklePitch); // rotates the foot
 
         goToStartLocation = true;
         //FindGround();
@@ -105,10 +123,13 @@ public class PlayerFootAnimator : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Animates the player's idle when they are not moving
+    /// </summary>
     void AnimateIdle() {
         if (goToStartLocation) {
-            transform.localPosition = AnimMath.Slide(transform.localPosition, startingPos, .1f);
-            if (transform.localPosition == startingPos)
+            transform.localPosition = AnimMath.Slide(transform.localPosition, startingPos, .1f); // smoothly animates the player idle
+            if (transform.localPosition == startingPos) // if the localPosition is equal to startingPos
                 goToStartLocation = false;
         }
         transform.localRotation = startingRot;
@@ -118,18 +139,21 @@ public class PlayerFootAnimator : MonoBehaviour {
         FindGround();
     }
 
+    /// <summary>
+    /// Shoots a raycast to find the ground 
+    /// </summary>
     void FindGround() {
 
-        Ray ray = new Ray(transform.position + new Vector3(0, 0.5f, 0), Vector3.down * 3f);
+        Ray ray = new Ray(transform.position + new Vector3(0, 0.5f, 0), Vector3.down * 3f); // create raycast
 
-        Debug.DrawRay(ray.origin, ray.direction);
+        Debug.DrawRay(ray.origin, ray.direction); // shows raycast in the scene
 
-        if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.tag == "Ground") {
+        if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.tag == "Ground") { // shoots raycast
 
-            transform.position = AnimMath.Slide(transform.position, hit.point +  new Vector3(0, .16f, 0), .001f);
+            transform.position = AnimMath.Slide(transform.position, hit.point +  new Vector3(0, .16f, 0), .001f); // puts foot where raycast has hit
             //targetPos = hit.point;
             
-            transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+            transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation; // rotates foot depending on surface
             //targetRot = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
 
         } else {
