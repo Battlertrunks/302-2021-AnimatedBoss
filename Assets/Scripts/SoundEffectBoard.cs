@@ -5,7 +5,7 @@ using UnityEngine;
 
     
 /// <summary>
-/// This class if for when the player, minion, and boss does sound effect actions
+/// This class if for when the player and boss does sound effect actions
 /// </summary>
 public class SoundEffectBoard : MonoBehaviour {
 
